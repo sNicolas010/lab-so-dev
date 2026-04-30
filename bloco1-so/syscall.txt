@@ -7,28 +7,34 @@
 # Cole abaixo a linha relevante da saída de:
 # strace echo "ola" 2>&1 | grep write
 
-Saída filtrada:
+Saída filtrada:write(1, "ola\n", 4)
 
 # Anote:
-#   Argumento 1 (file descriptor):
-#   O que está sendo escrito:
-#   Valor de retorno:
+#   Argumento 1 (file descriptor):1
+#   O que está sendo escrito:"ola\n"
+#   Valor de retorno:4
 
-fd:
-conteúdo:
-retorno:
+fd:1
+conteúdo:"ola\n"
+retorno:4
 
 
 # PARTE B — Programa C com write() direto
 
 # Cole aqui o código de syscall_direto.c que você escreveu:
 
-[código-fonte]
+#include <unistd.h>
+
+ int main() {
+     write(1, "ola\n", 4);
+     return 0;
+ }
+ EOF
 
 
 # Cole aqui a linha write(...) da saída de strace ./syscall_direto:
 
-[saída do strace]
+ola
 
 
 # PARTE C — Questões de síntese
@@ -38,10 +44,11 @@ retorno:
 #    instruções privilegiadas diretamente? (mínimo 2 frases)
 
 Resposta 1:
-
+O programa de usuário acessa as funções de Input/Output sem de fato entrar no modo hardware chamando a função (systemcall), que altera o modo usuário para o modo kernel, permitindo que o núcleo do sistema acesse e execute essas funções restritas de forma segura e controlada.
 
 # 2. Compare write(fd, buffer, tamanho) com o "programa de canal"
 #    da apresentação: o que os dois têm em comum em termos de
 #    responsabilidades?
 
 Resposta 2:
+Em ambos, o processo principal apenas "prepara o pedido" e deixa outro agente (Canal ou Kernel) fazer o trabalho pesado. Ambos precisam saber onde buscar a informação, para onde enviá-la e quanto enviar.
