@@ -5,8 +5,9 @@
 # FASE 1 — Pré-processador (gcc -E)
 # Quantas linhas tem soma.i? O que o pré-processador expandiu?
 
-Linhas em soma.i:
+Linhas em soma.i: 757
 Observação:
+O pré-processador expande os #include e quaisquer macros, e salva o resultado em soma.i.
 
 
 # FASE 2 — Assembly (gcc -S)
@@ -14,27 +15,46 @@ Observação:
 # interessantes.
 
 Trecho de soma.s:
+main:
+        addi    sp,sp,-16
+        sd      ra,8(sp)
+        sd      s0,0(sp)
+        addi    s0,sp,16
+        li      a1,5
+        li      a0,7
+        call    soma
+        mv      a5,a0
+        mv      a1,a5
+        lui     a5,%hi(.LC0)
+        addi    a0,a5,%lo(.LC0)
+        call    printf
 
 # FASE 3 — Código objeto (gcc -c)
 # Cole a saída de: file soma.o
 
 file soma.o:
+soma.o: ELF 64-bit LSB relocatable, UCB RISC-V, version 1 (SYSV), not stripped
 
 # Cole a saída de: nm soma.o
 
 nm soma.o:
+0000000000000000 r .LC0
+0000000000000028 T main
+                 U printf
+0000000000000000 T soma
 
 # Quais símbolos aparecem? O que significa o marcador "U" ao lado
 # de printf?
 
 Observação sobre nm:
-
+Aparecem os símbolos r, T, U, T
+U significando Undefined — referenciada mas não definida aqui.
 
 # FASE 4 — Ligação (gcc soma.o -o soma)
 # O que mudou após a ligação? Execute ./soma e registre a saída.
 
-Saída de ./soma:
-
+Saída de ./soma: 12
+obs: o ligador resolve os símbolos indefinidos buscando-os na biblioteca padrão do C (libc)
 
 # QUESTÕES DE SÍNTESE
 
@@ -42,10 +62,10 @@ Saída de ./soma:
 # Na saída do nm soma.o, printf aparece marcado como U (Undefined). Qual é o papel do 
 # ligador em relação a esse símbolo? 
 
-Resposta 1:
+Resposta 1: resolve undefined, buscando-o dentro da biblioteca padrão C (libc)
 
 
 # 2. Você gerou três arquivos intermediários: soma.i (pré-processado), soma.s (assembly),
 #    soma.o (objeto). Qual desses é o que o computador realmente executa?
 
-Resposta 2:
+Resposta 2: executa na verdade o ligador que acessa o Objeto
