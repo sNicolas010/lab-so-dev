@@ -9,6 +9,7 @@
 # No shell moderno, qual mecanismo cumpre papel equivalente?
 
 Resposta:
+O mecanismo equivalente é o Redirecionamento de Entrada/Saída (I/O Redirection) e os Pipes. No shell moderno, utilizamos símbolos como >, <, >> e | para associar o fluxo de dados de um programa a arquivos ou dispositivos, assim como o JCL fazia explicitamente.
 
 # ─────────────────────────────────────────────────────
 
@@ -20,6 +21,7 @@ Resposta:
 #    que não mudou?
 
 Resposta 1:
+O mecanismo que cumpre esse papel é a Verificação de Dependências (baseada no Grafo de Dependências). O make sabe que não precisa recompilar um arquivo comparando as marcas de tempo (timestamps): se o arquivo de destino (ex: soma.o) for mais recente que o arquivo de origem (ex: soma.c), ele entende que nada mudou e pula a tarefa.
 
 
 # 2. O monitor unificava "supervisor, carregador e rotinas de I/O
@@ -27,3 +29,4 @@ Resposta 1:
 #    de desenvolvimento moderno?
 
 Resposta 2:
+O Makefile unifica as regras de compilação, as dependências entre arquivos e os comandos de automação (como as quatro fases do GCC que você viu) em um único arquivo de configuração. Ele abstrai o pipeline de desenvolvimento, permitindo que todo o processo de construção (build) de um software complexo seja executado com um único comando.
